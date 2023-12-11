@@ -1,0 +1,18 @@
+name: go-common
+run-name: ${{gitea.actor }} is testing out Gitea Actions 🚀
+on: [push]
+
+jobs:
+  discovery-actions:
+    runs-on: ubuntu-22.04
+    container: clibing/ubuntu-golang:1.21.5
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: |
+          export BUILD_VERSION=$(shell cat version)
+          export BUILD_DATE=$(shell date "+%F %T")
+          export COMMIT_SHA1=$(shell git rev-parse HEAD)
+          export DIST_PREFIX=go-common
+          go build -trimpath -o "dist/single" -ldflags " -X 'github.com/clibing/go-common/cmd.buildVersion=${BUILD_VERSION}' -X 'github.com/clibing/go-common/cmd.buildDate=${BUILD_DATE}' -X 'github.com/clibing/go-common/cmd.commitId=${COMMIT_SHA1}' -X 'github.com/clibing/go-common/cmd.execBinName=${DIST_PREFIX}' -w -s"
+          ./dist/single version
