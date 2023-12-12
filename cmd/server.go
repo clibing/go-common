@@ -8,12 +8,13 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+
 	"github.com/clibing/go-common/api"
+	"github.com/clibing/go-common/pkg/config"
+	"github.com/clibing/go-common/pkg/log"
+	"github.com/clibing/go-common/pkg/model"
 	"github.com/gin-gonic/gin"
 	ginlogrus "github.com/toorop/gin-logrus"
-	"github.com/clibing/go-common/internal/pkg/config"
-	"github.com/clibing/go-common/internal/pkg/log"
-	"github.com/clibing/go-common/internal/pkg/model"
 	"github.com/urfave/cli/v2"
 )
 
@@ -28,14 +29,15 @@ func server() *cli.Command {
 		Action: func(c *cli.Context) error {
 			input := c.String("config")
 
-			cfg, err := config.LoadConfig(input)
+			cfg := model.Config{}
+			err := config.LoadConfig(&cfg, input)
 			if err != nil {
 				fmt.Println("加载配置异常: ", input)
 				return nil
 			}
 
 			// logger
-			logger := log.Init(cfg.Log.Level)
+			logger := log.LogLevel(cfg.Log.Level)
 
 			// cli.ShowAppHelp(c)
 			router := gin.New()
@@ -90,7 +92,6 @@ func server() *cli.Command {
 			}
 
 			logger.Info("Server exit.")
-
 
 			return nil
 		},

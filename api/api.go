@@ -1,7 +1,7 @@
 package api
 
 import (
-	"github.com/clibing/go-common/internal/pkg/model"
+	"github.com/clibing/go-common/pkg/model"
 )
 
 func BindHandle(context *model.Context) (err error) {
