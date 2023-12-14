@@ -2,13 +2,17 @@ package util
 
 import "sync"
 
-type Set[T string | int | int8 | int16 | int32 | int64 | uint | uint8 | uint16 | uint32 | uint64] struct {
+type Numeric interface {
+	int | int8 | int16 | int32 | int64 | uint | uint8 | uint16 | uint32 | uint64 | float32 | float64
+}
+
+type Set[T string | Numeric ] struct {
 	m            map[T]struct{}
 	len          int
 	sync.RWMutex // lock
 }
 
-func NewSet[T string | int | int8 | int16 | int32 | int64 | uint | uint8 | uint16 | uint32 | uint64](cap int64) *Set[T] {
+func NewSet[T string | Numeric](cap int64) *Set[T] {
 	temp := make(map[T]struct{}, cap)
 	return &Set[T]{
 		m: temp,
@@ -50,7 +54,7 @@ func (s *Set[T]) Len() int {
 
 // 集合是够为空
 func (s *Set[T]) IsEmpty() bool {
-	return s.Len() == 0 
+	return s.Len() == 0
 }
 
 // 清除集合所有元素
