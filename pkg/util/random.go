@@ -6,7 +6,9 @@ import (
 )
 
 // 字母 a-zA-Z
-const stringLetters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const stringUpperLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+const stringLowerLetters = "abcdefghijklmnopqrstuvwxyz"
 
 // 数字
 const numberLetters = "0123456789"
@@ -14,11 +16,14 @@ const numberLetters = "0123456789"
 // 特殊字符
 const specialLetters = "!@#$%^&*"
 
+func init() {
+	rand.New(rand.NewSource(time.Now().UnixNano()))
+}
+
 /**
  * 基础随机方法
  */
 func baseRandStr(n int, value string) string {
-	rand.New(rand.NewSource(time.Now().UnixNano()))
 	b := make([]byte, n)
 	len := len(value)
 	for i := range b {
@@ -28,10 +33,24 @@ func baseRandStr(n int, value string) string {
 }
 
 /**
+ * 随机字符串 大写
+ */
+func StringUpperRandom(len int) string {
+	return baseRandStr(len, stringUpperLetters)
+}
+
+/**
+ * 随机字符串 小写
+ */
+func StringLowerRandom(len int) string {
+	return baseRandStr(len, stringLowerLetters)
+}
+
+/**
  * 随机字符串
  */
 func StringRandom(len int) string {
-	return baseRandStr(len, stringLetters)
+	return baseRandStr(len, stringLowerLetters+stringUpperLetters)
 }
 
 /**
@@ -42,5 +61,5 @@ func NumberRandom(len int) string {
 }
 
 func Random(len int) string {
-	return baseRandStr(len, stringLetters+numberLetters+specialLetters)
+	return baseRandStr(len, stringLowerLetters+stringUpperLetters+numberLetters+specialLetters)
 }
