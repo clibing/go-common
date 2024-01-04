@@ -14,11 +14,36 @@ const (
 	GB
 	TB
 	PB
+	SECOND = 1000
+	MIUNTE = SECOND * 60
+	HOUR   = MIUNTE * 60
+	DAY    = HOUR * 24
+	MONTH  = DAY * 30
+	YEAR   = MONTH * 12
 )
+
+func BeautifyTime(unixMilli int64) string {
+	if unixMilli < SECOND {
+		return "<1s"
+	} else if unixMilli < MIUNTE {
+		return fmt.Sprintf("%.2fs", float64(unixMilli)/float64(SECOND))
+	} else if unixMilli < HOUR {
+		return fmt.Sprintf("%.2fm", float64(unixMilli)/float64(MIUNTE))
+	} else if unixMilli < DAY {
+		return fmt.Sprintf("%.2fh", float64(unixMilli)/float64(HOUR))
+	} else if unixMilli < MONTH {
+		return fmt.Sprintf("%.2fd", float64(unixMilli)/float64(DAY))
+	} else if unixMilli < YEAR {
+		return fmt.Sprintf("%.2fm", float64(unixMilli)/float64(MONTH))
+	} else {
+		return fmt.Sprintf("%.2fy", float64(unixMilli)/float64(YEAR))
+	}
+	return ""
+}
 
 /**
  * 字节的单位转换 保留两位小数
- * 
+ *
  * 1024 -> 1.00KB
  */
 func ByteFormat(input int64) string {
@@ -40,7 +65,7 @@ func ByteFormat(input int64) string {
 /**
  * 输入字符串:
  * 类型的大小 转 字节
- * 
+ *
  */
 func ReverseByteFormat(input string) int64 {
 	re := regexp.MustCompile(`(?m)[0-9\.]+`)

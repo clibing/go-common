@@ -34,3 +34,14 @@ func TestParse(t *testing.T) {
 	// assert.Equal(t, , t1, , "")
 
 }
+
+func TestBeautifyTime(t *testing.T) {
+	fmt.Printf("900ms(<1s)->%s\n", util.BeautifyTime(900))
+	fmt.Printf("1500ms(1.50s)->%s\n", util.BeautifyTime(1500))
+	fmt.Printf("180s(3.00)->%s\n", util.BeautifyTime(1000*180))
+	fmt.Printf("30m(30.00)->%s\n", util.BeautifyTime(1000*60*30))
+	fmt.Printf("1.5h(1.50h)->%s\n", util.BeautifyTime(1000*60*60*1.5))
+	fmt.Printf("1.5d(1.50d)->%s\n", util.BeautifyTime(1000*60*60*1.5*24))
+	fmt.Printf("1.5m(1.50m)->%s\n", util.BeautifyTime(1000*60*60*1.5*24*30))
+	fmt.Printf("1.5y(1.50y)->%s\n", util.BeautifyTime(1000*60*60*1.5*24*30*12))
+}
